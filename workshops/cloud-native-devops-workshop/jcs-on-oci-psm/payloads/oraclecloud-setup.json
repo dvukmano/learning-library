@@ -1,0 +1,7 @@
+{ 
+    "username":"john.smith@example.com",
+    "password":"aZerty12",
+    "identityDomain":"idcs-35w8456d2e6544e6736s14ffa9866e73",
+    "region":"us",
+    "outputFormat":"short"
+}

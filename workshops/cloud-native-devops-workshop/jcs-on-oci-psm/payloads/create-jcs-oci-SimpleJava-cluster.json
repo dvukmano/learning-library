@@ -1,0 +1,35 @@
+{
+	"availabilityDomain":"QnsC:PHX-AD-1",
+	"backupDestination":"NONE",
+	"edition":"EE",
+	"enableNotification":"true",
+	"meteringFrequency":"HOURLY",
+	"notificationEmail":"john.smith@example.com", 
+	"provisionOTD":"false",
+	"region":"us-phoenix-1",
+	"serviceDescription":"Simple Java EE",
+	"serviceLevel":"PAAS",
+	"serviceName":"SimpleJava",
+	"serviceVersion":"12cRelease212",
+	"subnet": "ocid1.subnet.oc1.phx.aaaaaaaasrksg2vphnzthx2biars2mxa6fiibx4tbhs2jpmakjlorxmbhbyq",
+	"vmPublicKeyText":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCL92Bj/2xoAZoEaZmNcLIIA88lmX/4of94NR4OC/p5k3isHBiJ/435+gQXPfqyQO8fN9neC9crVBoB5k4mWUTMTNR/vDAJQw6k3aNNSRKZHmMDi1x6dArqJAs6xQhz3HH+jDpItfW+807DARLAPBcUOtTVeE09KDmDvABNSiI3Qa50gkyUu58GQJ53ZpcfByo9YWRwWOYOWP6q/f/S/Dsm8fm92r284q2jbnOdgvjq7xf4ju3PdoqhfN4jjajpslerNDwt/uZ+UUqzAeJG7QKz6oUVYYHrmPXyc4ouVrZu9O5OxQLg5HjpLIQjY9exVG82Cg/LU+fnmyfTjQ8hj4kl",
+	"components":{
+		"WLS":{
+			"adminPassword":"Ach1z0#d",
+			"adminUserName":"weblogic",
+			"clusters":[
+                {
+                    "type":"APPLICATION_CLUSTER",
+                    "clusterName":"MyWLScluster",
+                    "shape":"VM.Standard1.1",
+                    "serverCount":"1",
+                }
+            ],
+			"dbaName":"sys",
+			"dbaPassword":"Ach1z0#d",
+			"dbServiceName":"SimpleDBCS",
+			"sampleAppDeploymentRequested":"true",
+			"shape":"VM.Standard1.1"
+		}	
+	}
+}
