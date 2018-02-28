@@ -19,7 +19,7 @@ Note: The content of the CLI response is based on the resources defined in your 
 
 ### Scenario ###
 You have subscriptions to Oracle Public cloud and you did setup prerequisites for Oracle Platform Services on Oracle Cloud Infrastructure (first step in JCSonOCI lab), and provisioned Oracle Database Cloud (Database as a Service) instances on OCI (second step in JCSonOCI). 
-Now, you want to learn how to create different environments for Java applications using PSM CLI. This tutorial shows you how create three kind of environments. Specifically, you will create the following environments (environments are based on QuickStart Templates with some changes):
+Now, you want to learn how to create different environments for Java applications using PSM CLI. This tutorial shows you how create three kind of environments. Specifically, you will create the following environments (environments are based on [QuickStart Templates](https://docs.oracle.com/en/cloud/paas/java-cloud/jscug/creating-oracle-java-cloud-service-instance-using-quickstart-template.html?embed=1) with some changes):
 -	Simple Java Web App – single node WL EE serve (1 OCPU)
 -	Multi-Tier Java EE App with High Availability – two node WL EE cluster with two OTD (4 OCPU)
 -	Highly Available Java EE App with Caching – two node WL Suite cluster, two OTD, one node Coherence (5 OCPU)
@@ -144,7 +144,7 @@ After you provision this environment, try this command below and compare output 
 
 ### Provisioning of Multi-Tier Java EE App with High Availability – two node WL EE cluster with two OTD (4 OCPU) ###
 This Oracle Java Cloud Service environment is comprised of two Oracle WebLogic Server nodes to ensure maximum availability. External clients access your applications through a two active load balancer nodes.
-![](images/hajavacache.png)
+![](images/multitierjava.png)
 
 PSM CLI Payload:
 ```
