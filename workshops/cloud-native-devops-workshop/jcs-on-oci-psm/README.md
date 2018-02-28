@@ -101,6 +101,7 @@ We will continue with examples for provisioning different jcs environments. At t
 
 ### Provisioning of Simple Java Web App environment (single node WL EE serve (1 OCPU)) ###
 This environment is comprised of a single Oracle WebLogic Server node.
+
 ![](images/simplejava.png)
 
 PSM CLI Payload:
@@ -144,6 +145,7 @@ After you provision this environment, try this command below and compare output 
 
 ### Provisioning of Multi-Tier Java EE App with High Availability – two node WL EE cluster with two OTD (4 OCPU) ###
 This Oracle Java Cloud Service environment is comprised of two Oracle WebLogic Server nodes to ensure maximum availability. External clients access your applications through a two active load balancer nodes.
+
 ![](images/multitierjava.png)
 
 PSM CLI Payload:
@@ -192,6 +194,7 @@ After you provision this environment, try this command below and compare output 
 
 ### Highly Available Java EE App with Caching – two node WL Suite cluster, two OTD, one node Coherence (5 OCPU) ###
 This Oracle Java Cloud Service environment is comprised of two Oracle WebLogic Server nodes to ensure maximum availability. To optimize performance, applications deployed to WebLogic Server can also take advantage of an Oracle Coherence node running an in-memory data cache. External clients access your applications through a two active load balancer nodes.
+
 ![](images/hajavacache.png)
 
 PSM CLI Payload:
