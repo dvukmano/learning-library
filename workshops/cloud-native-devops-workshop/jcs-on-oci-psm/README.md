@@ -248,10 +248,63 @@ After you provision this environment, try this command below and compare output 
 
 ```>psm jcs service –s JavaServiceName –of json```
 
+### Provision environments with custom "cluster" details in payload ###
+In previous examples we did not use cluster attribute but we used number of managed servers attribute ("managedServerCount":"2") to create cluster with default values. If you want to control cluster creation tnan you have to use "clusters" groups properties for one or more clusters. This attribute is optional for the WebLogic Server application cluster. You must, however, use the clusters array if you want to define a caching (data grid) cluster for the service instance.
 
+If you insert this payload snippet into examples that we used so far under WLS component you will get the same environment provisioned, but now you control cluster details.
 
+```
+"clusters":[
+                {
+                    "type":"APPLICATION_CLUSTER", //APPLICATION_CLUSTER - WebLogic cluster (default).
+                    "clusterName":"MyWLScluster",
+                    "shape":"", //Desired compute shape for the nodes in this cluster. A shape defines the number of Oracle Compute Units (OCPUs) and amount of memory (RAM). This shape attribute is optional. If no shape value is specified here, the shape is inherited from the WLS component level shape.
+                    "serverCount":"2", //For APPLICATION_CLUSTER - Valid values include: 1, 2, 4, and 8. The default value is 1.
+                }
+            ],
+```
 
+Payload source code: [create-jcs-oci-SimpleJava-cluster.json](payloads/create-jcs-oci-SimpleJava-cluster.json)
 
+Pyload Source code: [create-jcs-oci-MultiTierJava-cluster.json](payloads/create-jcs-oci-MultiTierJava-cluster.json)
 
+Payload source code: [create-jcs-oci-HAJavaCache-cluster.json](payloads/create-jcs-oci-HAJavaCache-cluster.json)
 
+Note that same effect for SimpleJava environment can be achieved with adding attribute "clusterName":"MyWLScluster", on top level attributes.
+
+### Provision environments with backup option BOTH ###
+For the production environment not having backup is not an option, therefore, we will add backup to our environments.
+In order to setup backup we have to set attribute “backupDestination” to ”BOTH”. This attribute is applicable only when “serviceLevel” is set to “PAAS”. 
+
+If you insert this payload snippet into examples that we used so far under top level you will get the same environment provisioned, with the control of cluster details, and now with backup.
+
+```
+“backupDestination”:”BOTH”, //BOTH - Enable backups, this means automated scheduled backups are enabled, and on-demand backups can be initiated. All backups are stored on disk (in a volume attached to the nodes) and in the bucket that is specified in “cloudStorageContainer”.
+"cloudStorageContainer":"https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/acme/JCSbucket", //URI of the object storage container or bucket for storing Oracle Java Cloud Service instance backups. This attribute is not required if backupDestination is set to NONE. It is also not required when provisioning an Oracle Java Cloud Service service instance with the BASIC service level.
+Note: Do not use a container or bucket that you use to back up Oracle Java Cloud Service instances for any other purpose. 
+For example, do not also use the same container or bucket to back up Oracle Database Cloud Service database deployments. 
+On Oracle Cloud Infrastructure, the object storage bucket must be created ahead of provisioning your Oracle Java Cloud Service instance. Do not use the same bucket for each service instance. Certain prerequisites must be satisfied when you create the bucket. Use the following URL form to specify the bucket: https://swiftobjectstorage.<region>.oraclecloud.com/v1/<account>/<container> For example:https://swiftobjectstorage.us-phoenix-1.oraclecloud.com/v1/acme/JCSbucket
+"cloudStorageUser":"john.smith@example.com ", //This is the user name for the Object Storage service user.
+"cloudStoragePassword":"4fzyHf.f5[J97xysdF&Z", //This is the Swift password to use with the Object Storage service.
+```
+
+Payload source code: [create-jcs-oci-SimpleJava-cluster-backup.json](payloads/create-jcs-oci-SimpleJava-cluster-backup.json)
+
+Pyload Source code: [create-jcs-oci-MultiTierJava-cluster-backup.json](payloads/create-jcs-oci-MultiTierJava-cluster-backup.json)
+
+Payload source code: [create-jcs-oci-HAJavaCache-cluster-backup.json](payloads/create-jcs-oci-HAJavaCache-cluster-backup.json)
+	  
+
+### OCI Classic vs OCI ###
+
+In this lab we are focused on OCI. If you want to use those examples on OCI-C environments you have to pay attention to following OCI specific attributes and change them accordingly:
+
+```
+"region": "OCI region" //choose OCI-C region
+"availabilityDomain": "OCI AD" //at the moment not used for OCI-C
+"subnet": "OCID of a subnet within a VCN created in OCI" //not used for OCI-C
+"shape": "OCI shape" //choos OCI-C shape; oc3, ...
+"cloudStorageContainer": "Bucket created in OCI" //object storage container on OCI-C
+"cloudStoragePwd": "Swift password generated in OCI" //this is the password for the Oracle Cloud Infrastructure Object Storage Classic user who has read and write access to the container that is specified in cloudStorageContainer on OCI-C
+```
 
