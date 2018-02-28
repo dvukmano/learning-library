@@ -56,7 +56,7 @@ Before you run psm setup command, if your machine requires a proxy server in ord
 set http_proxy=http://myproxy.oracle.com:80
 set https_proxy=https://myproxy.oracle.com:80
 ```
-Below is the example of profile used in this workshop with parameter comments so you cannot copy/paste it as is, remove comment or use source code from here, [oraclecloud-setup.json](scripts/oraclecloud-setup.json).
+Below is the example of profile used in this workshop with parameter comments so you cannot copy/paste it as is, remove comment or use source code from here, [oraclecloud-setup.json](payloads/oraclecloud-setup.json).
 ```
 { 
     "username":" john.smith@example.com", //Username for the account.
@@ -98,6 +98,48 @@ Ful description of that command you can check with:
 ```>psm jcs create-service h```
 
 We will continue with examples for provisioning different jcs environments. At the beginning of each lab you can see diagram of environment that will be provisioned, then payload file with comments (comments you have to remove if you will use copy/paste) and source code at the end. We will start with simpler environment and adding more details in subsequent environments. Attributes used in payload file are most common one; it is not full list of all attributes.
+
+### Provisioning of Simple Java Web App environment (single node WL EE serve (1 OCPU)) ###
+This environment is comprised of a single Oracle WebLogic Server node.
+![](images/simplejava.png)
+
+PSM CLI Payload:
+```
+{
+	"availabilityDomain":"QnsC:PHX-AD-1", 
+	"backupDestination":"NONE", //Whether to enable backups for this Oracle Java Cloud Service instance. NONE - Do not enable backups. This means automated scheduled backups are not enabled, and on-demand backups cannot be initiated.
+	"edition":"EE", // Software edition for Oracle WebLogic Server. SE - Standard edition, scaling a cluster is not supported. EE - Enterprise Edition. This is the default for both PAAS and BASIC service levels.
+	"enableNotification":"true",  //Whether to enable (true) or disable (false) notifications by email. If this property is set to true, you must specify a value in notificationEmail. Notifications are sent when service instance provisioning is successful or not successful.
+	"meteringFrequency":"HOURLY", //HOURLY - Pay only for the number of hours used during your billing period, must be HOURLY for Universal Credits subscription.
+	"notificationEmail":"john.smith@example.com",  //The email that will be used to send notifications to.
+	"provisionOTD":"false", // Whether to enable a local load balancer for the service instance. The default value is true when you configure more than one Managed Server for the Oracle Java Cloud Service instance.
+	"region":"us-phoenix-1", // Name of the region where the Oracle Java Cloud Service instance is to be provisioned. The Oracle Database Cloud Service database deployment on Oracle Cloud Infrastructure must be in the same region and virtual cloud network as the Oracle Java Cloud Service instance you are creating on Oracle Cloud Infrastructure. The service instances do not need to be on the same subnet or availability domain.
+	"serviceDescription":"Simple Java EE",
+	"serviceLevel":"PAAS", //PAAS- Production-level service. This is the default. Supports Oracle Java Cloud Service instance creation and monitoring, backup and restoration, patching, and scaling.
+	"serviceName":"SimpleJava", //Must: not exceed 30 characters, start with a letter, contain only letters and numbers, not contain any special characters (including hyphens), unique within the identity domain. The names of the domain and cluster in the service instance will be generated from the first eight characters of the service instance name (serviceName), using the following formats, respectively:first8charsOfServiceInstanceName_domain, first8charsOfServiceInstanceName_cluster
+	"serviceVersion":"12cRelease212", //Oracle WebLogic Server software version. Valid values are: 12cRelease212 (default), 12cR3 and 11gR1.
+	"subnet": "ocid1.subnet.oc1.phx.aaaaaaaasrksg2vphnzthx2biars2mxa6fiibx4tbhs2jpmakjlorxmbhbyq", //A subnet exists in a single availability domain and consists of a contiguous range of IP addresses that do not overlap with other subnets in the cloud network. The subnet must already be created in the specified availability domain. The Oracle Database Cloud Service database deployment on Oracle Cloud Infrastructure must be in the same region and virtual cloud network as the Oracle Java Cloud Service instance you are creating on Oracle Cloud Infrastructure. The service instances do not need to be on the same subnet or availability domain. However, if the service instances are on different subnets, your Oracle Java Cloud Service instance backup will fail if the backup is configured to include a backup of the associated Oracle Database Cloud Service database deployment. Note that value for this attribute is Oracle Cloud ID (OCID). Every Oracle Cloud Infrastructure resource has an Oracle-assigned unique ID called an Oracle Cloud Identifier (OCID). It's included as part of the resource's information in ihe OCI Console.
+	"vmPublicKeyText":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCL92Bj/2xoAZoEaZmNcLIIA88lmX/4of94NR4OC/p5k3isHBiJ/435+gQXPfqyQO8fN9neC9crVBoB5k4mWUTMTNR/vDAJQw6k3aNNSRKZHmMDi1x6dArqJAs6xQhz3HH+jDpItfW+807DARLAPBcUOtTVeE09KDmDvABNSiI3Qa50gkyUu58GQJ53ZpcfByo9YWRwWOYOWP6q/f/S/Dsm8fm92r284q2jbnOdgvjq7xf4ju3PdoqhfN4jjajpslerNDwt/uZ+UUqzAeJG7QKz6oUVYYHrmPXyc4ouVrZu9O5OxQLg5HjpLIQjY9exVG82Cg/LU+fnmyfTjQ8hj4kl", //The public key for the secure shell (SSH). This key will be used for authentication when connecting to the Oracle Java Cloud Service instance using an SSH client.
+	"components":{
+		"WLS":{
+			"adminPassword":"Ach1z0#d", //Password for the WebLogic Server administrator.
+			"adminUserName":"weblogic", //User name for the WebLogic Server administrator.
+			"dbaName":"sys", //User name for the database administrator. For service instances based on Oracle WebLogic Server 12c(12.2.1 and 12.1.3), this value must be set to a database user with SYSDBA system privileges. You can use the default user SYS or a user that has been granted the SYSDBA privilege.
+Only an Oracle Java Cloud Service instance based on WebLogic Server 12.2.1 can use a required schema database deployment that is created using the Oracle Database 12.2 version. To ensure that you can restore the database for an Oracle Java Cloud Service instance without risking data loss for other service instances, do not use the same Database Cloud Service database deployment with multiple Oracle Java Cloud Service instances. When provisioning a service instance in a specific region, specify a Database Cloud Service database deployment that is in the same region. When provisioning a production-level Oracle Java Cloud Service instance, you must use a production-level Database Cloud Service. The backup option for that database deployment cannot be NONE.(Not applicable to Oracle Cloud Infrastructure)  The Oracle Database Cloud Service database deployment on Oracle Cloud Infrastructure must be in the same region and virtual cloud network as the Oracle Java Cloud Service instance you are creating on Oracle Cloud Infrastructure, but the service instances do not have to be on the same subnet. In this release, however, if the service instances are on different subnets, your Oracle Java Cloud Service instance backup will fail if the backup is configured to include a backup of the associated Oracle Database Cloud Service database deployment. An Oracle Database Cloud Service database deployment based on a RAC database is not supported. 
+			"dbaPassword":"Ach1z0#d", //Password for the Database administrator that was specified when the Database Cloud Service database deployment was created.
+			"dbServiceName":"SimpleDBCS", //Name of the database deployment on Oracle Database Cloud Service to host the Oracle schemas required for this Oracle Java Cloud Service instance.
+			"managedServerCount":"1", //Number of Managed Servers in the WebLogic Server application cluster. This attribute is ignored if clusters array is used. Valid values include: 1, 2, 4, and 8. The default value is 1.
+			"sampleAppDeploymentRequested":"true", //Whether to automatically deploy and start the sample application, sample-app.war, to the default Managed Server in your service instance. The default value is false.
+			"shape":"VM.Standard1.1" //Desired compute shape for the node. A shape defines the number of Oracle Compute Units (OCPUs) and amount of memory (RAM).The valid shapes on Oracle Cloud Infrastructure includes the VM.Standard1, VM.Standard2 and BM.Standard1, BM.Standard2 shapes.
+		}	
+	}
+}
+```
+Payload source code: [create-jcs-oci-SimpleJava.json](payloads/create-jcs-oci-SimpleJava.json)
+PSM command: ```>psm jcs create-service -c create-jcs-oci-SimpleJava.json```
+
+After you provision this environment, try this command below and compare output with payload:
+```>psm jcs service –s JavaServiceName –of json```
 
 
 
