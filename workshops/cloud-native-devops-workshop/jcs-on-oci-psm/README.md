@@ -59,9 +59,9 @@ set https_proxy=https://myproxy.oracle.com:80
 Below is the example of profile used in this workshop with parameter comments so you cannot copy/paste it as is, remove comment or use source code from here, [oraclecloud-setup.json](scripts/oraclecloud-setup.json).
 ```
 { 
-    "username":" john.smith@example.com", // Username for the account.
-    "password":" aZerty12", // Password associated with the specified username.
-    "identityDomain":"idcs-35w8456d2e6544e6736s14ffa9866e73", // Identity domain associated with the specified user. If you are configuring your CLI for use with Identity Cloud Service (IDCS), you need to enter your IDCS tenant name rather than your identity domain. The IDCS tenant name is usually a lengthy string of characters preceded by a service ID, for example, idcs-6572bfeb183b4becad9e649bfa14a488. Below are steps to find Identity Domain for IDCS enabled accounts.
+    "username":" john.smith@example.com", //Username for the account.
+    "password":" aZerty12", //Password associated with the specified username.
+    "identityDomain":"idcs-35w8456d2e6544e6736s14ffa9866e73", //Identity domain associated with the specified user. If you are configuring your CLI for use with Identity Cloud Service (IDCS), you need to enter your IDCS tenant name rather than your identity domain. The IDCS tenant name is usually a lengthy string of characters preceded by a service ID, for example, idcs-6572bfeb183b4becad9e649bfa14a488. Below are steps to find Identity Domain for IDCS enabled accounts.
     "region":"us", //The cloud data center region”us”, “emea”, “aucom”
     "outputFormat":"short" //Output of psm command, “short”, “json”, “html”
 }
@@ -81,17 +81,21 @@ Having successfully created profile file and entered data you can run psm comman
 ![](images/psm-setup-04.png)
 
 After successful connection, we are ready for new commands. You can try some of commands below before we start provision environments:
-- Description of all commands related to jcs service: >```psm jcs h```
-- List of available services in your account: >```psm jcs services```
-- Description of particular “MyJCS” jcs service: >```psm jcs service -s MyJCS```
-- Checks health of the “MyJCS”service: >```psm jcs check-health -s MyJCS```
+- Description of all commands related to jcs service: ```>psm jcs h```
+- List of available services in your account: ```>psm jcs services```
+- Description of particular “MyJCS” jcs service: ```>psm jcs service -s MyJCS```
+- Checks health of the “MyJCS”service: ```>psm jcs check-health -s MyJCS```
 Try those commands also with changing output format to json by adding “-of json” on the end of each command, for example:
 ```>psm jcs check-health -s MyJCS –of json```
+
 Note that default output was in “short” format since we setup this format in our profile file, if you want to use “json” as default format that you can change this parameter in profile file.
+
 Command that we wil use to provision jcs environment is:
 ```> psm jcs create-service -c create-jcs-payload.json```
+
 Ful description of that command you can check with:
 ```>psm jcs create-service h```
+
 We will continue with examples for provisioning different jcs environments. At the beginning of each lab you can see diagram of environment that will be provisioned, then payload file with comments (comments you have to remove if you will use copy/paste) and source code at the end. We will start with simpler environment and adding more details in subsequent environments. Attributes used in payload file are most common one; it is not full list of all attributes.
 
 
