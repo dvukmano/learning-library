@@ -135,11 +135,60 @@ PSM CLI Payload:
 }
 ```
 Payload source code: [create-jcs-oci-SimpleJava.json](payloads/create-jcs-oci-SimpleJava.json)
+
 PSM command: ```>psm jcs create-service -c create-jcs-oci-SimpleJava.json```
 
 After you provision this environment, try this command below and compare output with payload:
+
 ```>psm jcs service –s JavaServiceName –of json```
 
+### Provisioning of Multi-Tier Java EE App with High Availability – two node WL EE cluster with two OTD (4 OCPU) ###
+This Oracle Java Cloud Service environment is comprised of two Oracle WebLogic Server nodes to ensure maximum availability. External clients access your applications through a two active load balancer nodes.
+![](images/multitierjava.png)
+
+PSM CLI Payload:
+```
+{
+	"availabilityDomain":"QnsC:PHX-AD-2",
+	"backupDestination":"NONE",
+	"edition":"EE",
+	"enableNotification":"true",
+	"meteringFrequency":"HOURLY",
+	"notificationEmail":"john.smith@example.com ", 
+	"provisionOTD":"true",
+	"region":"us-phoenix-1",
+	"serviceDescription":"Multi-Tier Java EE High Availability",
+	"serviceLevel":"PAAS",
+	"serviceName":"MultiTierJava",
+	"serviceVersion":"12cRelease212",
+	"subnet": "ocid1.subnet.oc1.phx.aaaaaaaa5yi47ksp5keilshdfqqqued33mssero4ih22axa5lv5xa6lbp3vq",
+	"vmPublicKeyText":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCL92Bj/2xoAZoEaZmNcLIIA88lmX/4of94NR4OC/p5k3isHBiJ/435+gQXPfqyQO8fN9neC9crVBoB5k4mWUTMTNR/vDAJQw6k3aNNSRKZHmMDi1x6dArqJAs6xQhz3HH+jDpItfW+807DARLAPBcUOtTVeE09KDmDvABNSiI3Qa50gkyUu58GQJ53ZpcfByo9YWRwWOYOWP6q/f/S/Dsm8fm92r284q2jbnOdgvjq7xf4ju3PdoqhfN4jjajpslerNDwt/uZ+UUqzAeJG7QKz6oUVYYHrmPXyc4ouVrZu9O5OxQLg5HjpLIQjY9exVG82Cg/LU+fnmyfTjQ8hj4kl",
+	"components":{
+		"WLS":{
+			"adminPassword":"Welcome1#",
+			"adminUserName":"weblogic",
+			"dbaName":"sys",
+			"dbaPassword":"Welcome1#",
+			"dbServiceName":"Alpha02PHAD1",
+			"managedServerCount":"2",
+			"sampleAppDeploymentRequested":"true",
+			"shape":"VM.Standard1.1"
+		},
+        "OTD":{
+            "haEnabled":"true", //Whether the local load balancer HA is enabled. This value defaults to false.
+            "loadBalancingPolicy":"LEAST_CONNECTION_COUNT", //Policy to use for routing requests to the Managed Servers. LEAST_CONNECTION_COUNT - Passes each new request to the Managed Server with the least number of connections. This is the default. LEAST_RESPONSE_TIME - Passes each new request to the Managed Server with the fastest response time. ROUND_ROBIN - Passes each new request to the next Managed Server in line, evenly distributing requests across all Managed Servers regardless of the number of connections or response time.
+            "shape":"VM.Standard1.1"
+        }		
+	}
+}
+```
+Pyload Source code: [create-jcs-oci-MultiTierJava.json](payloads/create-jcs-oci-MultiTierJava.json)
+
+PSM command: ```>psm jcs create-service -c create-jcs-oci-MultiTierJava.json```
+
+After you provision this environment, try this command below and compare output with payload:
+
+```>psm jcs service –s JavaServiceName –of json```
 
 
 
