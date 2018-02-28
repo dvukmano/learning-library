@@ -144,7 +144,7 @@ After you provision this environment, try this command below and compare output 
 
 ### Provisioning of Multi-Tier Java EE App with High Availability – two node WL EE cluster with two OTD (4 OCPU) ###
 This Oracle Java Cloud Service environment is comprised of two Oracle WebLogic Server nodes to ensure maximum availability. External clients access your applications through a two active load balancer nodes.
-![](images/multitierjava.png)
+![](images/hajavacache.png)
 
 PSM CLI Payload:
 ```
@@ -190,6 +190,63 @@ After you provision this environment, try this command below and compare output 
 
 ```>psm jcs service –s JavaServiceName –of json```
 
+### Highly Available Java EE App with Caching – two node WL Suite cluster, two OTD, one node Coherence (5 OCPU) ###
+This Oracle Java Cloud Service environment is comprised of two Oracle WebLogic Server nodes to ensure maximum availability. To optimize performance, applications deployed to WebLogic Server can also take advantage of an Oracle Coherence node running an in-memory data cache. External clients access your applications through a two active load balancer nodes.
+![](images/hajavacache.png)
+
+PSM CLI Payload:
+```
+{
+	"availabilityDomain":"QnsC:PHX-AD-2",
+	"backupDestination":"NONE",
+	"edition":"SUITE", //When creating an instance that has a caching (data grid) cluster, you must set this value to SUITE.
+	"enableNotification":"true",
+	"meteringFrequency":"HOURLY",
+	"notificationEmail":"john.smith@example.com", 
+	"provisionOTD":"true",
+	"region":"us-phoenix-1",
+	"serviceDescription":"Highly Available Java EE App with Caching",
+	"serviceLevel":"PAAS",
+	"serviceName":"HAJavaCache",
+	"serviceVersion":"12cRelease212",
+	"subnet": "ocid1.subnet.oc1.phx.aaaaaaaa5yi47ksp5keilshdfqqqued33mssero4ih22axa5lv5xa6lbp3vq",
+	"vmPublicKeyText":"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCL92Bj/2xoAZoEaZmNcLIIA88lmX/4of94NR4OC/p5k3isHBiJ/435+gQXPfqyQO8fN9neC9crVBoB5k4mWUTMTNR/vDAJQw6k3aNNSRKZHmMDi1x6dArqJAs6xQhz3HH+jDpItfW+807DARLAPBcUOtTVeE09KDmDvABNSiI3Qa50gkyUu58GQJ53ZpcfByo9YWRwWOYOWP6q/f/S/Dsm8fm92r284q2jbnOdgvjq7xf4ju3PdoqhfN4jjajpslerNDwt/uZ+UUqzAeJG7QKz6oUVYYHrmPXyc4ouVrZu9O5OxQLg5HjpLIQjY9exVG82Cg/LU+fnmyfTjQ8hj4kl",
+	"components":{
+		"WLS":{
+			"adminPassword":"Ach1z0#d",
+			"adminUserName":"weblogic",
+			"dbaName":"sys",
+			"dbaPassword":"Ach1z0#d",
+			"dbServiceName":"Alpha02PHAD1",
+            "domainMode":"PRODUCTION",
+            "clusters":[ // Groups properties for one or more clusters. This attribute is optional for the WebLogic Server application cluster. You must use the clusters array if you want to define a caching (data grid) cluster for the service instance.
+                {
+                    "type":"CACHING_CLUSTER", //CACHING_CLUSTER - Caching (data grid) cluster. This is the WebLogic cluster for Coherence storage. APPLICATION_CLUSTER - Application cluster (default). This is the WebLogic cluster.
+                    "clusterName":"MyCacheCluster", //Name of the cluster. The cluster name must: not exceed 50 characters, start with a letter, contain only alphabetical characters, underscores (_), or dashes (-), not contain any other special characters. Must be unique within the identity domain
+                    "serverCount":"1", //Number of servers to create in this cluster. For CACHING_CLUSTER - Use a number from 1 to 32 only. The default value is 1.The serverCount limit is based on the VM (cluster size) limit of four and the serversPerNode limit of eight.Note: The actual server number is rounded up to fill the number of nodes required to create the caching cluster. For example, if serversPerNode is four and serverCount is three, the actual number of servers that will be created is four. For APPLICATION_CLUSTER - Valid values include: 1, 2, 4, and 8. The default value is 1.
+                    "serversPerNode":"1", // Number of JVMs to start on each VM (node). This attribute is applicable only to cluster type CACHING_CLUSTER. Use a number from 1 to 8 only. The default value is 1.
+                    "shape":"VM.Standard1.1"
+                }
+            ],
+			"managedServerCount":"2",
+			"sampleAppDeploymentRequested":"true",
+			"shape":"VM.Standard1.1"
+		},
+        "OTD":{
+            "haEnabled":"true",
+            "loadBalancingPolicy":"LEAST_CONNECTION_COUNT",
+            "shape":"VM.Standard1.1"
+        }		
+	}
+}
+```
+Payload source code: [create-jcs-oci-HAJavaCache.json](payloads/create-jcs-oci-HAJavaCache.json)
+
+PSM command: ```>psm jcs create-service -c create-jcs-oci-HAJavaCache.json```
+
+After you provision this environment, try this command below and compare output with payload:
+
+```>psm jcs service –s JavaServiceName –of json```
 
 
 
