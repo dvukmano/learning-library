@@ -85,6 +85,7 @@ After successful connection, we are ready for new commands. You can try some of 
 - List of available services in your account: ```>psm jcs services```
 - Description of particular “MyJCS” jcs service: ```>psm jcs service -s MyJCS```
 - Checks health of the “MyJCS”service: ```>psm jcs check-health -s MyJCS```
+
 Try those commands also with changing output format to json by adding “-of json” on the end of each command, for example:
 ```>psm jcs check-health -s MyJCS –of json```
 
